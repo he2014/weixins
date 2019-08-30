@@ -5,6 +5,7 @@ cloud.init()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
+  console.log(3333333333333333)
   console.log(event)
   switch (event.action) {
     case 'sendTemplateMessage': {

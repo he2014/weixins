@@ -5,7 +5,7 @@ cloud.init()
 // 云函数入口函数
 exports.main = async (event, context) => {
 
-  console.log(event,'000000000000000')
+  console.log('000000000000000')
   console.log(cloud.getWXContext())
 
   const { OPENID } = cloud.getWXContext()
