@@ -13,6 +13,7 @@ Page({
   },
 
   onLoad: function (options) {
+    console.log(options)
     if (app.globalData.openid) {
       this.setData({
         openid: app.globalData.openid

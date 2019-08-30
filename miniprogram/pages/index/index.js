@@ -1,6 +1,7 @@
 //index.js
 const app = getApp()
 
+
 Page({
   data: {
     avatarUrl: './user-unlogin.png',
@@ -48,12 +49,13 @@ Page({
 
   onGetOpenid: function() {
     // 调用云函数
+    // const cloud = require('wx-server-sdk')
     wx.cloud.callFunction({
       name: 'login',
       data: {},
       success: res => {
-        console.log('[云函数] [login] user openid: ', res.result.openid)
-        app.globalData.openid = res.result.openid
+        console.log(res.result.userInfo.openId)
+        app.globalData.openid = res.result.userInfo.openId
         wx.navigateTo({
           url: '../userConsole/userConsole',
         })
