@@ -10,6 +10,18 @@ Page({
     takeSession: false,
     requestResult: ''
   },
+  formSubmit: function (e) {
+    console.log('form发生了submit事件，携带数据为：', e)
+    const { formId } = e.detail
+    console.log(formId)
+    wx.cloud.callFunction({
+      name: 'openapi',
+      data: { action: 'sendTemplateMessage', formId },
+      success: res => {
+        console.log(res)
+      }
+    })
+  },
 
   onLoad: function() {
     if (!wx.cloud) {
@@ -54,9 +66,9 @@ Page({
     // const cloud = require('wx-server-sdk')
     wx.cloud.callFunction({
       name: 'login',
-      data: {},
+      data: {d:2},
       success: res => {
-        console.log(res.result.userInfo.openId)
+        console.log(res)
         app.globalData.openid = res.result.userInfo.openId
         wx.navigateTo({
           url: '../userConsole/userConsole',

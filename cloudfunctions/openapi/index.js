@@ -5,8 +5,7 @@ cloud.init()
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  console.log(3333333333333333)
-  console.log(event)
+  console.log(event, context)
   switch (event.action) {
     case 'sendTemplateMessage': {
       return sendTemplateMessage(event)
@@ -18,28 +17,31 @@ exports.main = async (event, context) => {
       return getOpenData(event)
     }
     default: {
-      return
+      return sendTemplateMessage(event)
     }
   }
 }
 
 async function sendTemplateMessage(event) {
   const { OPENID } = cloud.getWXContext()
-
   // 接下来将新增模板、发送模板消息、然后删除模板
   // 注意：新增模板然后再删除并不是建议的做法，此处只是为了演示，模板 ID 应在添加后保存起来后续使用
-  const addResult = await cloud.openapi.templateMessage.addTemplate({
-    id: 'AT0002',
-    keywordIdList: [3, 4, 5]
-  })
+  // const addResult = await cloud.openapi.templateMessage.addTemplate({
+  //   id: '',
+  //   keywordIdList: [3,
+  //     4,
+  //     5,6]
+  // })
 
-  const templateId = addResult.templateId
-
+  // const templateId = addResult.templateId
+  // console.log(templateId)
+  // console.log(OPENID)
+  // console.log(event.formId)
   const sendResult = await cloud.openapi.templateMessage.send({
     touser: OPENID,
-    templateId,
-    formId: event.formId,
-    page: 'pages/openapi/openapi',
+    templateId:'d7-NwpRJc6lB4tWbyj9-hk0x9EXBpA8tnoK-fRe3YgM',
+    formId: "5102b828ee9d4baf87bdca5da48b4a8a",//event.formId,
+    page: 'pages/userConsole/userConsole',
     data: {
       keyword1: {
         value: '未名咖啡屋',
@@ -49,14 +51,19 @@ async function sendTemplateMessage(event) {
       },
       keyword3: {
         value: '拿铁',
-      },
+      }
+    
     }
   })
 
-  await cloud.openapi.templateMessage.deleteTemplate({
-    templateId,
+  // await cloud.openapi.templateMessage.deleteTemplate({
+  //   templateId,
+  // })
+  const result = await cloud.openapi.templateMessage.getTemplateList({
+    offset: 0,
+    count: 20
   })
-
+  console.log(result)
   return sendResult
 }
 
